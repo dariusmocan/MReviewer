@@ -1,0 +1,29 @@
+body {
+    background-color: black;
+    font-family: Arial, sans-serif;
+    color: #940b0b;
+    margin: 0;
+    padding: 0;
+  }
+  
+  h1 {
+    text-align: center;
+    margin-top: 30px;
+  }
+  
+  #contact-container {
+    background-color: black;
+    padding: 30px;
+    margin: 20px auto;
+    width: 400px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  }
+  
+  h2 {
+    color: #b39e9e;
+  }
+  
+  p {
+    margin-bottom: 10px;
+  }
+  
