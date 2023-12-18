@@ -2,12 +2,20 @@
 
 include 'components/connect.php';
 
-if(isset($_GET['get_id'])){
-   $get_id = $_GET['get_id'];
-}else{
-   $get_id = '';
-   header('location:all_posts.php');
-}
+    // Retrieve parameters from the URL
+    $postId = isset($_GET['id']) ? $_GET['id'] : '';
+    $titlu = isset($_GET['title']) ? urldecode($_GET['title']) : '';
+    $overview = isset($_GET['overview']) ? urldecode($_GET['overview']) : '';
+    $image = isset($_GET['image']) ? urldecode($_GET['image']) : '';
+    $voteAverage = isset($_GET['vote_average']) ? $_GET['vote_average'] : '';
+
+    /*
+    echo "<p>Post ID: $postId</p>";
+    echo "<p>Title: $title</p>";
+echo "<p>Overview: $overview</p>";
+echo "<p>Vote Average: $voteAverage</p>";
+echo "<img src='$image' alt='Movie Poster'>";*/
+
 
 if(isset($_POST['submit'])){
 
@@ -22,13 +30,13 @@ if(isset($_POST['submit'])){
       $rating = filter_var($rating, FILTER_SANITIZE_STRING);
 
       $verify_review = $conn->prepare("SELECT * FROM `reviews` WHERE post_id = ? AND user_id = ?");
-      $verify_review->execute([$get_id, $user_id]);
+      $verify_review->execute([$postId, $user_id]);
 
       if($verify_review->rowCount() > 0){
          $warning_msg[] = 'Your review already added!';
       }else{
          $add_review = $conn->prepare("INSERT INTO `reviews`(id, post_id, user_id, rating, title, description) VALUES(?,?,?,?,?,?)");
-         $add_review->execute([$id, $get_id, $user_id, $rating, $title, $description]);
+         $add_review->execute([$id, $postId, $user_id, $rating, $title, $description]);
          $success_msg[] = 'Review added!';
       }
 
@@ -75,9 +83,14 @@ if(isset($_POST['submit'])){
          <option value="3">3</option>
          <option value="4">4</option>
          <option value="5">5</option>
+         <option value="6">6</option>
+         <option value="7">7</option>
+         <option value="8">8</option>
+         <option value="9">9</option>
+         <option value="10">10</option>
       </select>
       <input type="submit" value="submit review" name="submit" class="btn">
-      <a href="view_post.php?get_id=<?= $get_id; ?>" class="option-btn">go back</a>
+      <a href="view_post.php?get_id= <?=$postId?>&title=<?= urlencode($titlu) ?>&overview=<?= urlencode($overview) ?>&image=<?= urlencode($image) ?>&vote_average=<?= $voteAverage ?>" class="inline-option-btn" style="margin-top: 0;">go back</a>
    </form>
 
 </section>
