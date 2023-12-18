@@ -2,31 +2,6 @@
 
 include 'components/connect.php';
 
-if(isset($_GET['get_id'])){
-   $get_id = $_GET['get_id'];
-}else{
-   $get_id = '';
-   header('location:all_posts.php');
-}
-
-if(isset($_POST['delete_review'])){
-
-   $delete_id = $_POST['delete_id'];
-   $delete_id = filter_var($delete_id, FILTER_SANITIZE_STRING);
-
-   $verify_delete = $conn->prepare("SELECT * FROM `reviews` WHERE id = ?");
-   $verify_delete->execute([$delete_id]);
-   
-   if($verify_delete->rowCount() > 0){
-      $delete_review = $conn->prepare("DELETE FROM `reviews` WHERE id = ?");
-      $delete_review->execute([$delete_id]);
-      $success_msg[] = 'Review deleted!';
-   }else{  
-      $warning_msg[] = 'Review already deleted!';
-   }
-
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -48,106 +23,30 @@ if(isset($_POST['delete_review'])){
 <!-- header section ends -->
 
 <!-- view posts section starts  -->
+<?php
+    // Retrieve parameters from the URL
+    $postId = isset($_GET['id']) ? $_GET['id'] : '';
+    $title = isset($_GET['title']) ? urldecode($_GET['title']) : '';
+    $overview = isset($_GET['overview']) ? urldecode($_GET['overview']) : '';
+    $image = isset($_GET['image']) ? urldecode($_GET['image']) : '';
+    $voteAverage = isset($_GET['vote_average']) ? $_GET['vote_average'] : '';
+
+?>
 
 <section class="view-post">
 
-   <div class="heading"><h1>post details</h1> <a href="all_posts.php" class="inline-option-btn" style="margin-top: 0;">all posts</a></div>
 
-   <?php
-      $select_post = $conn->prepare("SELECT * FROM `posts` WHERE id = ? LIMIT 1");
-      $select_post->execute([$get_id]);
-      if($select_post->rowCount() > 0){
-         while($fetch_post = $select_post->fetch(PDO::FETCH_ASSOC)){
-
-        $total_ratings = 0;
-        $rating_1 = 0;
-        $rating_2 = 0;
-        $rating_3 = 0;
-        $rating_4 = 0;
-        $rating_5 = 0;
-
-        $select_ratings = $conn->prepare("SELECT * FROM `reviews` WHERE post_id = ?");
-        $select_ratings->execute([$fetch_post['id']]);
-        $total_reivews = $select_ratings->rowCount();
-        while($fetch_rating = $select_ratings->fetch(PDO::FETCH_ASSOC)){
-            $total_ratings += $fetch_rating['rating'];
-            if($fetch_rating['rating'] == 1){
-               $rating_1 += 1;
-            }
-            if($fetch_rating['rating'] == 2){
-               $rating_2 += 1;
-            }
-            if($fetch_rating['rating'] == 3){
-               $rating_3 += 1;
-            }
-            if($fetch_rating['rating'] == 4){
-               $rating_4 += 1;
-            }
-            if($fetch_rating['rating'] == 5){
-               $rating_5 += 1;
-            }
-        }
-
-        if($total_reivews != 0){
-            $average = round($total_ratings / $total_reivews, 1);
-        }else{
-            $average = 0;
-        }
-        
-   ?>
    <div class="row">
       <div class="col">
-         <h3 class="title"><?= $fetch_post['title']; ?></h3>
-         <img src="uploaded_files/<?= $fetch_post['image']; ?>" alt="" class="image">
+         <h3 class="title"><?= $title ?></h3>
+         <img src= '<?= $image ?>' alt="" class="image">
       </div>
       <div class="col">
          <div class="flex">
-         <h3 class="title"><?= $fetch_post['description'];?></h3>
-            <div class="total-reviews">
-               <h3><?= $average; ?><i class="fas fa-star"></i></h3>
-               <p><?= $total_reivews; ?> reviews</p>
-            </div>
-            <div class="total-ratings">
-               <p>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <span><?= $rating_5; ?></span>
-               </p>
-               <p>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <span><?= $rating_4; ?></span>
-               </p>
-               <p>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <span><?= $rating_3; ?></span>
-               </p>
-               <p>
-                  <i class="fas fa-star"></i>
-                  <i class="fas fa-star"></i>
-                  <span><?= $rating_2; ?></span>
-               </p>
-               <p>
-                  <i class="fas fa-star"></i>
-                  <span><?= $rating_1; ?></span>
-               </p>
-            </div>
-         </div>
-      </div>
-   </div>
-   <?php
-         }
-      }else{
-         echo '<p class="empty">post is missing!</p>';
-      }
-   ?>
+         <h3 class="title"><?= $voteAverage ?></h3>
+         <h3 class="title"><?= $overview ?></h3>
+</div>
+</div>
 
 </section>
 
@@ -157,13 +56,12 @@ if(isset($_POST['delete_review'])){
 
 <section class="reviews-container">
 
-   <div class="heading"><h1>user's reviews</h1> <a href="add_review.php?get_id=<?= $get_id; ?>" class="inline-btn" style="margin-top: 0;">add review</a></div>
+   <div class="heading"><h1>user's reviews</h1> <a href="add_review.php?id=<?= urlencode($postId) ?>&title=<?= urlencode($title) ?>&overview=<?= urlencode($overview) ?>&image=<?= urlencode($image) ?>&vote_average=<?= $voteAverage ?>" class="inline-option-btn" style="margin-top: 0;">add review</a></div>
 
    <div class="box-container">
-
    <?php
       $select_reviews = $conn->prepare("SELECT * FROM `reviews` WHERE post_id = ?");
-      $select_reviews->execute([$get_id]);
+      $select_reviews->execute([$postId]);
       if($select_reviews->rowCount() > 0){
          while($fetch_review = $select_reviews->fetch(PDO::FETCH_ASSOC)){
    ?>
@@ -185,23 +83,7 @@ if(isset($_POST['delete_review'])){
          </div>
       </div>
       <?php }; ?>
-      <div class="ratings">
-         <?php if($fetch_review['rating'] == 1){ ?>
-            <p style="background:black;"><i class="fas fa-star"></i> <span><?= $fetch_review['rating']; ?></span></p>
-         <?php }; ?> 
-         <?php if($fetch_review['rating'] == 2){ ?>
-            <p style="background:black;"><i class="fas fa-star"></i> <span><?= $fetch_review['rating']; ?></span></p>
-         <?php }; ?>
-         <?php if($fetch_review['rating'] == 3){ ?>
-            <p style="background:black;"><i class="fas fa-star"></i> <span><?= $fetch_review['rating']; ?></span></p>
-         <?php }; ?>   
-         <?php if($fetch_review['rating'] == 4){ ?>
-            <p style="background:black;"><i class="fas fa-star"></i> <span><?= $fetch_review['rating']; ?></span></p>
-         <?php }; ?>
-         <?php if($fetch_review['rating'] == 5){ ?>
-            <p style="background:black;"><i class="fas fa-star"></i> <span><?= $fetch_review['rating']; ?></span></p>
-         <?php }; ?>
-      </div>
+      
       <h3 class="title"><?= $fetch_review['title']; ?></h3>
       <?php if($fetch_review['description'] != ''){ ?>
          <p class="description"><?= $fetch_review['description']; ?></p>
@@ -222,6 +104,7 @@ if(isset($_POST['delete_review'])){
    ?>
 
    </div>
+   
 
 </section>
 
