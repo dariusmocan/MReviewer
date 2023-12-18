@@ -1,18 +1,5 @@
 <?php
-
 include 'components/connect.php';
-
-if(isset($_POST['add_to_fav'])){
-
-   /*$product_name = $_POST['product_name'];
-   $product_image = $_POST['product_image'];
-
-   $insert_product = mysqli_query($conn, "INSERT INTO `favorite`(name, image) VALUES('$product_name', '$product_image')");
-   */
-   $message[] = 'added to favorites succesfully';
-   
-
-}
 ?>
 
 <!DOCTYPE html>
@@ -24,111 +11,48 @@ if(isset($_POST['add_to_fav'])){
    <title>MReviewer</title>
 
    <!-- custom css file link  -->
-   <link rel="stylesheet" href="css/style.css">
+   <link rel="stylesheet" href="homescript.css">
    
 
 </head>
 <body>
    
 <!-- header section starts  -->
-<?php include 'components/header.php'; ?>
 <!-- header section ends -->
+<header>
+<?php include 'components/header.php'; ?>
+<div class="form-center">
+        <form  id="form" class="center">
+            <input type="text" placeholder="Search" id="search" class="search">
+        </form>
+</div>
+</header>
 
-<!-- view all posts section starts  -->
+<div id="tags"></div>
+    <div id="myNav" class="overlay">
 
-<section class="all-posts">
-
-   <div class="heading"><h1>all movies:</h1></div>
-
-   <div class="box-container">
-
-   <?php
-      $select_posts = $conn->prepare("SELECT * FROM `posts`");
-      $select_posts->execute();
-      if($select_posts->rowCount() > 0){
-         while($fetch_post = $select_posts->fetch(PDO::FETCH_ASSOC)){
-
-         $post_id = $fetch_post['id'];
-
-         $count_reviews = $conn->prepare("SELECT * FROM `reviews` WHERE post_id = ?");
-         $count_reviews->execute([$post_id]);
-         $total_reviews = $count_reviews->rowCount();
-         $total_ratings = 0;
-        $rating_1 = 0;
-        $rating_2 = 0;
-        $rating_3 = 0;
-        $rating_4 = 0;
-        $rating_5 = 0;
-
-        $select_ratings = $conn->prepare("SELECT * FROM `reviews` WHERE post_id = ?");
-        $select_ratings->execute([$fetch_post['id']]);
-        $total_reivews = $select_ratings->rowCount();
-        while($fetch_rating = $select_ratings->fetch(PDO::FETCH_ASSOC)){
-            $total_ratings += $fetch_rating['rating'];
-            if($fetch_rating['rating'] == 1){
-               $rating_1 += $fetch_rating['rating'];
-            }
-            if($fetch_rating['rating'] == 2){
-               $rating_2 += $fetch_rating['rating'];
-            }
-            if($fetch_rating['rating'] == 3){
-               $rating_3 += $fetch_rating['rating'];
-            }
-            if($fetch_rating['rating'] == 4){
-               $rating_4 += $fetch_rating['rating'];
-            }
-            if($fetch_rating['rating'] == 5){
-               $rating_5 += $fetch_rating['rating'];
-            }
-        }
-
-        if($total_reivews != 0){
-            $average = round($total_ratings / $total_reivews, 1);
-        }else{
-            $average = 0;
-        }
+        <!-- Button to close the overlay navigation -->
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
       
+        <!-- Overlay content -->
+        <div class="overlay-content" id="overlay-content"></div>
+        
+        <a href="javascript:void(0)" class="arrow left-arrow" id="left-arrow">&#8656;</a> 
+        
+        <a href="javascript:void(0)" class="arrow right-arrow" id="right-arrow" >&#8658;</a>
 
+      </div>
+    <main id="main"></main>
+    <div class="pagination">
+        <div class="page" id="prev">Previous Page</div>
+        <div class="current" id="current">1</div>
+        <div class="page" id="next">Next Page</div>
 
-      
-   ?>
-   <div class="box">
-   <form action="" method="post">
-      <img src="uploaded_files/<?= $fetch_post['image']; ?>" alt="" class="image">
-      <h3 class="title"><?= $fetch_post['title']; ?></h3>
-      <p class="total-reviews"><i class="fas fa-star"></i> <span><?= $average; ?> </span></p>
-      <a href="view_post.php?get_id=<?= $post_id; ?>" class="inline-btn">view post </a>
+    </div>
 
-      <input type="hidden" name="product_title" value="<?php echo $fetch_product['title']; ?>">
-      <input type="hidden" name="product_image" value="<?php echo $fetch_product['image']; ?>">
-      <input type="submit" value="add to fav" name="add_to_fav" class="btn">
-   </form>
-   </div>
-   <?php
-      }
-   }else{
-      echo '<p class="empty">no posts added yet!</p>';
-   }
-   ?>
-
-   </div>
-
-</section>
+   <script src='js/script2.js'></script>
 
 <!-- view all posts section ends -->
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 <!-- sweetalert cdn link  -->
@@ -137,7 +61,6 @@ if(isset($_POST['add_to_fav'])){
 <!-- custom js file link  -->
 <script src="js/script.js"></script>
 
-<?php include 'components/alers.php'; ?>
 
 </body>
 </html>
