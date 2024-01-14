@@ -1,5 +1,8 @@
 <?php
+
 include 'components/connect.php';
+include 'components/header.php';
+
 ?>
 
 <!DOCTYPE html>
@@ -20,7 +23,6 @@ include 'components/connect.php';
 <!-- header section starts  -->
 <!-- header section ends -->
 <header>
-<?php include 'components/header.php'; ?>
 <div class="form-center">
         <form  id="form" class="center">
             <input type="text" placeholder="Search" id="search" class="search">
