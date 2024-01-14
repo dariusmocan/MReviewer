@@ -2,6 +2,23 @@
 
 include 'components/connect.php';
 
+if(isset($_POST['delete_review'])){
+
+   $delete_id = $_POST['delete_id'];
+   $delete_id = filter_var($delete_id, FILTER_SANITIZE_STRING);
+
+   $verify_delete = $conn->prepare("SELECT * FROM `reviews` WHERE id = ?");
+   $verify_delete->execute([$delete_id]);
+   
+   if($verify_delete->rowCount() > 0){
+      $delete_review = $conn->prepare("DELETE FROM `reviews` WHERE id = ?");
+      $delete_review->execute([$delete_id]);
+      $success_msg[] = 'Review deleted!';
+   }else{  
+      $warning_msg[] = 'Review already deleted!';
+   }
+
+}
 ?>
 
 <!DOCTYPE html>
@@ -56,7 +73,7 @@ include 'components/connect.php';
 
 <section class="reviews-container">
 
-   <div class="heading"><h1>user's reviews</h1> <a href="add_review.php?id=<?= urlencode($postId) ?>&title=<?= urlencode($title) ?>&overview=<?= urlencode($overview) ?>&image=<?= urlencode($image) ?>&vote_average=<?= $voteAverage ?>" class="inline-option-btn" style="margin-top: 0;">add review</a></div>
+   <div class="heading"><h1>user's reviews</h1> <a href="add_review.php?id=<?= $postId ?>&title=<?= urlencode($title) ?>&overview=<?= urlencode($overview) ?>&image=<?= urlencode($image) ?>&vote_average=<?= $voteAverage ?>" class="inline-option-btn" style="margin-top: 0;">add review</a></div>
 
    <div class="box-container">
    <?php
@@ -89,11 +106,11 @@ include 'components/connect.php';
          <p class="description"><?= $fetch_review['description']; ?></p>
       <?php }; ?>  
       <?php if($fetch_review['user_id'] == $user_id){ ?>
-         <form action="" method="post" class="flex-btn">
+         <form action="" method="post" class="flex-btn" style="justify-content: flex-end;">
             <input type="hidden" name="delete_id" value="<?= $fetch_review['id']; ?>">
-            <a href="update_review.php?get_id=<?= $fetch_review['id']; ?>" class="inline-option-btn">edit review</a>
+            <!--<a href="update_review.php?get_id= <?= $fetch_review['id']; ?>" class="inline-option-btn">edit review</a>-->
             <input type="submit" value="delete review" class="inline-delete-btn" name="delete_review" onclick="return confirm('delete this review?');">
-         </form>
+</form>
       <?php }; ?>   
    </div>
    <?php
