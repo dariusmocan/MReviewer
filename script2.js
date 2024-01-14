@@ -1,5 +1,10 @@
 //TMDB 
 
+const API_KEY = 'api_key=560c5dcf3b6a2bf2da60e15e62f86817';
+const BASE_URL = 'https://api.themoviedb.org/3';
+const API_URL = BASE_URL + '/discover/movie?sort_by=popularity.desc&' + API_KEY;
+const IMG_URL = 'https://image.tmdb.org/t/p/w500';
+const searchURL = BASE_URL + '/search/movie?'+API_KEY;
 
 const genres = [
     {
@@ -220,16 +225,21 @@ function showMovies(data) {
                 <br/>
                 <br> 
                 <a href="#" class="know-more" id="${id}" onclick="openPost(${JSON.stringify(movie)})">review</a>
+                <a href="#" class="know-more" id="fav_${id}" onclick="openPost2(${JSON.stringify(movie)})">add to fav</a>
                 </div>
         
         `
-
         main.appendChild(movieEl);
-
         document.getElementById(id).addEventListener('click', () => {
-          //openNav(movie)
-          openPost(movie)
-        })
+            openPost(movie);
+        });
+
+        // Add event listener for "add to fav" button
+        document.getElementById(`fav_${id}`).addEventListener('click', () => {
+            openPost2(movie);
+        });
+  
+
     })
 }
 
@@ -245,6 +255,45 @@ function openPost(movie) {
     // Redirect to the view_post.php file
     window.location.href = url;
 }
+
+function openPost2(movie) {
+  const { id, title, poster_path, overview, vote_average } = movie;
+
+  const url = 'insert_favorite.php';
+  const data = {
+    id: id,
+    title: title,
+    image: IMG_URL + poster_path,
+    overview: overview,
+    vote_average: vote_average
+  };
+
+  // Create a form dynamically
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = url;
+
+  // Add hidden input fields for each data property
+  for (const key in data) {
+    if (data.hasOwnProperty(key)) {
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = key;
+      input.value = data[key];
+      form.appendChild(input);
+    }
+  }
+
+  // Append the form to the document body
+  document.body.appendChild(form);
+
+  // Submit the form
+  form.submit();
+}
+
+
+
+
 
 /*
 function openNav(movie) {
