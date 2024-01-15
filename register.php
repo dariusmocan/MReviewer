@@ -13,7 +13,7 @@ if(isset($_POST['submit'])){
    $pass = filter_var($pass, FILTER_SANITIZE_STRING);
    $c_pass = password_verify($_POST['c_pass'], $pass);
    $c_pass = filter_var($c_pass, FILTER_SANITIZE_STRING);
-   $pass2 = $_POST['pass'];
+   //$pass2 = $_POST['pass'];
 
    $image = $_FILES['image']['name'];
    $image = filter_var($image, FILTER_SANITIZE_STRING);
@@ -41,7 +41,7 @@ if(isset($_POST['submit'])){
    }else{
       if($c_pass == 1){
          $insert_user = $conn->prepare("INSERT INTO `users`(id, name, email, password, image) VALUES(?,?,?,?,?)");
-         $insert_user->execute([$id, $name, $email, $pass2, $rename]);
+         $insert_user->execute([$id, $name, $email, $pass, $rename]);
          $success_msg[] = 'Registered successfully!';
       }else{
          $warning_msg[] = 'Confirm password not matched!';
@@ -61,7 +61,7 @@ if(isset($_POST['submit'])){
    <title>register</title>
 
    <!-- custom css file link  -->
-   <link rel="stylesheet" href="css/style.css">
+   <link rel="stylesheet" href="logscript.css">
 
 </head>
 <body>
