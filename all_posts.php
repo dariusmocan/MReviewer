@@ -1,8 +1,13 @@
 <?php
-
+//session_start();
 include 'components/connect.php';
 include 'components/header.php';
+include 'components/alers.php';
 
+$success_msg = isset($_GET['success']) ? [$_GET['success']] : [];
+
+// Clear the session variable to avoid showing the message on subsequent visits
+unset($_GET['success']);
 ?>
 
 <!DOCTYPE html>
