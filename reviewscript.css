@@ -1,0 +1,367 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;700&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css');
+
+*{
+    font-family: 'Comfortaa', cursive;
+    margin: 0; padding: 0;
+    box-sizing:border-box;
+    outline: none; border: none;
+    text-decoration: none;
+    scrollbar-color: var(--main-color) var(--black);
+    scrollbar-width: thin;
+ }
+ 
+ html{
+    overflow-x: hidden;
+ }
+
+ section{
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+ }
+
+.heading{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 2rem;
+    margin-bottom: 2.5rem;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    border-bottom: var(--border);
+ }
+ 
+ .empty{
+    background-color: var(--white);
+    border-radius: .5rem;
+    border: var(--border);
+    padding: 1.5rem;
+    font-size: 1.8rem;
+    color: var(--red);
+    text-align: center;
+    width: 100%;
+    box-shadow: var(--box-shadow);
+ }
+ 
+ .inner{
+    display: inline-block;
+ }
+ 
+ .btn,
+ .delete-btn,
+ .option-btn{
+    display: block;
+    width: 100%;
+ }
+ 
+ .inline-btn,
+ .inline-delete-btn,
+ .inline-option-btn{
+    display: inline-block;
+ }
+ 
+ .btn,
+ .delete-btn,
+ .option-btn,
+ .inline-btn,
+ .inline-delete-btn,
+ .inline-option-btn{
+    margin-top: 1rem;
+    text-align: center;
+    padding: 1rem 3rem;
+    font-size: 1.8rem;
+    border-radius: .5rem;
+    border: black;
+    color: white;
+    cursor: pointer;
+    text-transform: capitalize;
+ }
+ 
+ .btn,
+ .inline-btn{
+    background-color: black;
+ }
+ 
+ .delete-btn,
+ .inline-delete-btn{
+    background-color: red;
+ }
+ 
+ .option-btn,
+ .inline-option-btn{
+    background-color: var(--orange);
+ }
+ 
+ .btn:hover,
+ .option-btn:hover,
+ .inline-btn:hover,
+ .inline-option-btn:hover{
+    color: red;
+ }
+ 
+ .delete-btn:hover,
+ .inline-delete-btn:hover{
+    color: black;
+ }
+ 
+ .flex-btn{
+    display: flex;
+    align-items: center;
+    column-gap: 1.5rem;
+    justify-content: space-between;
+    flex-wrap: wrap;
+ }
+ 
+ .header{
+    padding:1rem;
+    position:sticky;
+    top: 0; left: 0; right: 0;
+    background-color: rgb(75, 26, 155);
+    z-index: 1000;
+ }
+ 
+ .header .flex{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+ }
+ 
+ .header .flex .logo{
+    font-size: 2.5rem;
+    color: red;
+ }
+ 
+ .header .flex .navbar #user-btn,
+ .header .flex .navbar a{
+    height: 4rem;
+    width: 6.5rem;
+    line-height: 4rem;
+    font-size: 2.5rem;
+    color: white;
+    background-color: black;
+    border-radius: .5rem;
+    text-align: center; 
+    margin-left: .5rem;
+    cursor: pointer;
+ }
+ 
+ .header .flex .navbar #user-btn:hover,
+ .header .flex .navbar a:hover{
+    background-color: black;
+    color: red;
+ }
+ 
+ .header .flex .profile{
+    position: absolute;
+    top: 120%; right: 2rem;
+    background-color: var(--white);
+    box-shadow: var(--box-shadow);
+    padding: 2rem;
+    text-align: center;
+    width: 30rem;
+    border-radius: .5rem;
+    border: var(--border);
+    overflow-x: hidden;
+    transform: scale(0);
+    transform-origin: top right;
+ }
+ 
+ .header .flex .profile.active{
+    transform: scale(1);
+    transition: .2s linear;
+    background-color: #22254b;
+ }
+ 
+ .header .flex .profile p{
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+    color: var(--light-color);
+    font-size: 1.8rem;
+    padding-bottom: .5rem;
+ }
+
+movie-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.image{
+    height: 7rem;
+    width: 7rem;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 1.5rem;
+ }
+ 
+ .header .flex .profile .image{
+    height: 7rem;
+    width: 7rem;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 1.5rem;
+ }
+ 
+ .account-form form{
+    background: var(--white);
+    box-shadow: var(--box-shadow);
+    box-shadow: var(--box-shadow);
+    padding: 2rem;
+    border: var(--border);
+    border-radius: .5rem;
+    max-width: 50rem;
+    margin: 0 auto;
+ }
+ 
+ .account-form form h3{
+    padding-bottom: 1rem;
+    font-size: 2.5rem;
+    color: var(--black);
+    text-transform: capitalize;
+    text-align: center;
+ }
+ 
+ .account-form form p{
+    padding-top: 1rem;
+    font-size: 1.6rem;
+    color: var(--light-color);
+ }
+ 
+ .account-form form p span{
+    color: var(--red);
+ }
+ 
+ .account-form form .box{
+    width: 100%;
+    border-radius: .5rem;
+    padding: 1.4rem;
+    font-size: 1.8rem;
+    color: var(--black);
+    background-color: var(--light-bg);
+    margin: 1rem 0;
+ }
+ 
+ .account-form form textarea{
+    height: 15rem;
+    resize: none;
+ }
+ 
+ .account-form form .image{
+    height: 20rem;
+    width: 100%;
+    object-fit: contain;
+    margin-top: .5rem;
+ }
+ 
+ .account-form form .link{
+    padding: 1rem 0;
+    text-align: center;
+    font-size: 1.8rem;
+    color: var(--light-color);
+ }
+ 
+ .account-form form .link a{
+    color: var(--red);
+ }
+ 
+ .account-form form .link a:hover{
+    text-decoration: underline;
+ }
+
+:root{
+    --primary-color:#22254b;
+    --secondary-color: #373b69;
+}
+
+body{
+    background-color: var(--primary-color);
+    padding-bottom: 8rem;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+}
+
+main{
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.review-list {
+    list-style: none;
+    padding: 0;
+}
+
+.review {
+   position: relative;
+    margin: 20px 0;
+    padding: 20px;
+    background-color: #2c2c2c;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.review h3 {
+    margin-top: 0;
+    font-size: 1.8rem;
+    color: white;
+    text-decoration: underline;
+}
+
+.review p {
+    font-size: 1.4rem;
+    color: grey;
+    margin-bottom: 10px;
+}
+
+.review strong {
+    font-weight: bold;
+    color: white;
+}
+
+/* Add the following styles for the anchor tags */
+.review a {
+    color: #4caf50; /* Adjust the link color as needed */
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease-in-out;
+}
+
+.review a:hover {
+    color: #8bc34a; /* Adjust the hover color as needed */
+    text-decoration: underline;
+}
+
+.know-more{
+   cursor: pointer;
+   background-color: orange;
+   color:white;
+   font-size: 16px;
+   font-weight: bold;
+   border:0;
+   border-radius: 50px;
+   padding: 10px 20px;
+   margin-top: 5px;
+}
+
+/* Add these styles for the delete button */
+.review .delete-review-form {
+   position: absolute;
+   top: 0;
+   right: 0;
+   padding: 5px;
+}
+
+.delete-review-btn {
+   background-color: red;
+   color: white;
+   border: none;
+   padding: 5px 10px;
+   border-radius: 4px;
+   cursor: pointer;
+}
+
+.delete-review-btn:hover {
+   background-color: darkred;
+}
