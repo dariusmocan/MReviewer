@@ -35,8 +35,8 @@ if(isset($_POST['submit'])){
       if($verify_review->rowCount() > 0){
          $warning_msg[] = 'Your review already added!';
       }else{
-         $add_review = $conn->prepare("INSERT INTO `reviews`(id, post_id, user_id, rating, title, description) VALUES(?,?,?,?,?,?)");
-         $add_review->execute([$id, $postId, $user_id, $rating, $title, $description]);
+         $add_review = $conn->prepare("INSERT INTO `reviews`(id, post_id, user_id, rating, title, description, movie_title) VALUES(?,?,?,?,?,?,?)");
+         $add_review->execute([$id, $postId, $user_id, $rating, $title, $description,$titlu]);
          $success_msg[] = 'Review added!';
       }
 
@@ -57,7 +57,7 @@ if(isset($_POST['submit'])){
    <title>add review</title>
 
    <!-- custom css file link  -->
-   <link rel="stylesheet" href="css/style.css">
+   <link rel="stylesheet" href="logscript.css">
 
 </head>
 <body>
@@ -89,8 +89,8 @@ if(isset($_POST['submit'])){
          <option value="9">9</option>
          <option value="10">10</option>
       </select>
-      <input type="submit" value="submit review" name="submit" class="btn">
-      <a href="view_post.php?get_id= <?=$postId?>&title=<?= urlencode($titlu) ?>&overview=<?= urlencode($overview) ?>&image=<?= urlencode($image) ?>&vote_average=<?= $voteAverage ?>" class="inline-option-btn" style="margin-top: 0;">go back</a>
+      <input type="submit" value="submit review" name="submit" class="btn">   
+      <a href="view_post.php?id=<?= $postId ?>&title=<?= urlencode($titlu) ?>&overview=<?= urlencode($overview) ?>&image=<?= urlencode($image) ?>&vote_average=<?= $voteAverage ?>" class="inline-option-btn" style="margin-top: 0;">go back</a>
    </form>
 
 </section>
