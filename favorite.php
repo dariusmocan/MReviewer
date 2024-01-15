@@ -25,13 +25,26 @@ $favorite_movies = $fetch_favorites->fetchAll(PDO::FETCH_ASSOC);
         $verifyRemove = $conn->prepare("SELECT * FROM `favorite` WHERE id = ?");
         $verifyRemove->execute([$movieId]);
     
-        $successMsg[] = 'Movie removed from favorites!';
-
-        $removeFavorite = $conn->prepare("DELETE FROM `favorite` WHERE id = ?");
-        $removeFavorite->execute([$movieId]);
-        
+        // Check if the movie exists in the favorites
+        if ($verifyRemove->rowCount() > 0) {
+            $removeFavorite = $conn->prepare("DELETE FROM `favorite` WHERE id = ?");
+            $removeSuccess = $removeFavorite->execute([$movieId]);
+    
+            // Check if the removal was successful
+            if ($removeSuccess) {
+                $successMsg[] = 'Movie removed from favorites!';
+                // Add a JavaScript script to reload the page
+                echo '<script>window.location.reload();</script>';
+            } else {
+                $warningMsg[] = 'Failed to remove movie from favorites!';
+            }
+        } else {
+            $warningMsg[] = 'Movie not found in favorites!';
+        }
     }
-
+    
+    
+    include 'components/alers.php';
 ?>
 
 <!DOCTYPE html>
@@ -70,7 +83,7 @@ $favorite_movies = $fetch_favorites->fetchAll(PDO::FETCH_ASSOC);
                         <!-- Add a form and an input button for removal -->
                         <form action="" method="post" class="remove-favorite-form">
                             <input type="hidden" name="remove_id" value="<?= $movie['id'] ?>">
-                            <input type="submit" value="Remove" class="inline-delete-btn" name="remove_fav" onclick="return confirm('Remove from favorites?');">
+                            <input type="submit" value="Remove" class="know-more" name="remove_fav" onclick="return confirm('Remove from favorites?');">
                         </form>
                     </div>
                 </li>
